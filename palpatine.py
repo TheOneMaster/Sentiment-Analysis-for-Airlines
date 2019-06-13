@@ -27,7 +27,7 @@ class Sentiment():
         text = re.sub(r'\s+', ' ', text, flags=re.I)
         return text
 
-    def polarity(self, tweet, language):
+    def polarity(self, text, language):
         """Returns a dictionary containing the polarity of the text. Shows the different proprtions
         of sentiments expressed in the text.
         
@@ -44,7 +44,7 @@ class Sentiment():
         
         keywords = self.lang_keywords[language]
         
-        sentences = sent_tokenize(tweet)
+        sentences = sent_tokenize(text)
         sentences_clean = [self.clean_sentence(x) for x in sentences]
         sentences_clean = [x for x in sentences_clean if x not in ('', ' ')]
         
@@ -108,7 +108,10 @@ class Sentiment():
         }
         
         return pol_dict
-            
-            
+                       
 if __name__ == '__main__':
-    print('test')
+    print('This is a demo of the module. It is used for languages other than english. It is currently unifinished.')
+    test = 'Vous etes mon petite amie, je vous aime.'
+    sent = Sentiment()
+    polarity = sent.polarity(text=test, language='fr')
+    print(polarity)
