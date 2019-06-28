@@ -60,7 +60,7 @@ def export_to_sql(input_stuff, output):
                         score = vader.polarity_scores(text)['compound']
                         sent.append(score)
                     else:
-                        score = palpatine.polarity(tweet=text, language=lang)
+                        score = palpatine.basic_polarity(tweet=text, language=lang)
                         if isinstance(score, dict):
                             sent.append(score['compound'])
                         else:
@@ -208,10 +208,7 @@ if __name__ == '__main__':
 
     directory = input('Enter the absolute directory of the folder with the files: ')
     output_file = input('Enter the name of the database: ')
-    dir_list = [f'{directory}/{x}' for x in os.listdir(directory)]
     
-    for json_file in dir_list:
-        print(os.path.split(json_file)[1])
-        export_to_sql(json_file, f'{output}.db')
+    export_to_sql(directory, output_file)
     
     print('Done')

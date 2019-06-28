@@ -5,21 +5,16 @@ from operator import itemgetter
 from nltk import sent_tokenize
 import string
 
+PUNC_TABLE = str.maketrans({key:None for key in string.punctuation})
 
 class SentimentText:
 
     def __init__(self, sentence_list):
         self.sentences = sentence_list
-        self.punc_table = str.maketrans({key:None for key in string.punctuation})
-
-    def get_punc(self):
-        punc = [self.clean_punc(sentence) for sentence in self.sentences]
-        return punc
-    
+        
     def get_clean(self):
         cleaned_list = [self.clean_sentence(sentence) for sentence in self.sentences]
-        new_clean = [sentence.translate(self.punc_table) for sentence in cleaned_list]
-        return new_clean
+        return cleaned_list
     
     @staticmethod
     def clean_sentence(text):
@@ -30,6 +25,7 @@ class SentimentText:
         text = re.sub(r'[0-9\.]+', '', text)
         text = text.replace('"', '')
         text = text.replace("''", '')
+        text = text.translate(PUNC_TABLE)
         text = re.sub(r'\s+', ' ', text, flags=re.I)
         return text
 
@@ -60,7 +56,8 @@ class Sentiment:
         keywords = self.lang_keywords[language]
 
         sentences = sent_tokenize(tweet)
-        sentences_clean = [SentimentText.clean_sentence(x) for x in sentences]
+        SentiText = SentimentText(sentences)
+        sentences_clean = SentiText.get_clean()
         sentences_clean = [x for x in sentences_clean if x not in {'', ' '}]
 
         if len(sentences_clean) == 0:
@@ -127,4 +124,7 @@ class Sentiment:
         return pol_dict
 
 if __name__ == '__main__':
-    print('You have run this file. Do not run this file. Run the other file.')
+    test = 'h shd!...a shd oia sd?la shdl/asd j.'
+    print(test)
+    demo = SentimentText(sent_tokenize(test))
+    print(demo.get_clean())
