@@ -20,7 +20,7 @@ def export_to_sql(input_stuff, output):
     output - Name of the output file (.db)
     """
 
-    con = sql.connect(output)
+    con = sql.connect(f'{output}.db')
     vader = SentimentIntensityAnalyzer()
     palpatine = Sentiment()
 
