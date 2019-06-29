@@ -43,6 +43,9 @@ def export_to_sql(input_stuff, output):
         with jsonlines.open(file, mode='r') as main:
             for line in main.iter(allow_none=True, skip_invalid=True, skip_empty=True):
 
+                if "created_at" not in line:
+                    continue
+
                 # Table 1 (main)
                 tweet_id.append(line['id_str'])
                 user_id.append(line['user']['id_str'])
